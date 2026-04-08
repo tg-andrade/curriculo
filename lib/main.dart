@@ -1,121 +1,345 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(home: Curriculo(),
+  debugShowCheckedModeBanner: false,));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Curriculo extends StatefulWidget {
+  const Curriculo({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<Curriculo> createState() => _CurriculoState();
+}
+
+class Escolaridade extends StatelessWidget {
+  final List<String> escolaridades;
+
+  Escolaridade({super.key, List<String>? escolaridades})
+      : escolaridades = escolaridades ?? [];
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Escolaridade'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      body: escolaridades.isEmpty
+          ? Center(child: Text('Nenhuma escolaridade adicionada ainda.'))
+          : ListView.builder(
+              itemCount: escolaridades.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(escolaridades[index]),
+                );
+              },
+            ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Projetos extends StatelessWidget {
+  final List<String> projetos;
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  Projetos({super.key, List<String>? projetos})
+      : projetos = projetos ?? [];
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Projetos'),
+      ),
+      body: projetos.isEmpty
+          ? Center(child: Text('Nenhum projeto adicionado ainda.'))
+          : ListView.builder(
+              itemCount: projetos.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(projetos[index]),
+                );
+              },
+            ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class Recomendacao extends StatelessWidget {
+  final List<String> recomendacoes;
 
-  void _incrementCounter() {
+  Recomendacao({super.key, List<String>? recomendacoes})
+      : recomendacoes = recomendacoes ?? [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Recomendação'),
+      ),
+      body: recomendacoes.isEmpty
+          ? Center(child: Text('Nenhuma recomendação adicionada ainda.'))
+          : ListView.builder(
+              itemCount: recomendacoes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(recomendacoes[index]),
+                );
+              },
+            ),
+    );
+  }
+}
+
+class VisualizarCurriculo extends StatelessWidget {
+  final List<String> escolaridades;
+  final List<String> projetos;
+  final List<String> recomendacoes;
+
+  VisualizarCurriculo({
+    super.key,
+    List<String>? escolaridades,
+    List<String>? projetos,
+    List<String>? recomendacoes,
+  })  : escolaridades = escolaridades ?? [],
+        projetos = projetos ?? [],
+        recomendacoes = recomendacoes ?? [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Visualizar Currículo'),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage('images/eu.jpeg'),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Thiago de Andrade Balbinot',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 32.0),
+            Text(
+              'Escolaridade:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            escolaridades.isEmpty
+                ? Text('Nenhuma escolaridade adicionada.')
+                : Column(
+                    children: escolaridades
+                        .map((item) => Text('• $item'))
+                        .toList(),
+                  ),
+            SizedBox(height: 32.0),
+            Text(
+              'Projetos:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            projetos.isEmpty
+                ? Text('Nenhum projeto adicionado.')
+                : Column(
+                    children: projetos
+                        .map((item) => Text('• $item'))
+                        .toList(),
+                  ),
+            SizedBox(height: 32.0),
+            Text(
+              'Recomendações:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.0),
+            recomendacoes.isEmpty
+                ? Text('Nenhuma recomendação adicionada.')
+                : Column(
+                    children: recomendacoes
+                        .map((item) => Text('• $item'))
+                        .toList(),
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CurriculoState extends State<Curriculo> {
+  List<String> escolaridades = [];
+  List<String> projetos = [];
+  List<String> recomendacoes = [];
+
+  void _adicionarEscolaridade(String nova) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      escolaridades.add(nova);
     });
+  }
+
+  void _adicionarProjeto(String nova) {
+    setState(() {
+      projetos.add(nova);
+    });
+  }
+
+  void _adicionarRecomendacao(String nova) {
+    setState(() {
+      recomendacoes.add(nova);
+    });
+  }
+
+  void _mostrarDialogoAdicionar(BuildContext context) {
+    String? selectedTopic;
+    TextEditingController controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: Text('Adicionar Informação'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButton<String>(
+                  hint: Text('Selecione o tópico'),
+                  value: selectedTopic,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedTopic = newValue;
+                    });
+                  },
+                  items: <String>['Escolaridade', 'Projetos', 'Recomendação']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                TextField(
+                  controller: controller,
+                  decoration: InputDecoration(hintText: 'Digite a informação'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (selectedTopic != null && controller.text.isNotEmpty) {
+                    if (selectedTopic == 'Escolaridade') {
+                      _adicionarEscolaridade(controller.text);
+                    } else if (selectedTopic == 'Projetos') {
+                      _adicionarProjeto(controller.text);
+                    } else if (selectedTopic == 'Recomendação') {
+                      _adicionarRecomendacao(controller.text);
+                    }
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text('Adicionar'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              _mostrarDialogoAdicionar(context);
+            },
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage('images/eu.jpeg'),
+                  ),
+                  SizedBox(height: 16.0),
+                  Text(
+                    'Thiago de Andrade Balbinot',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
-          ],
+            SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Escolaridade(escolaridades: escolaridades)),
+                );
+              },
+              child: Text('Escolaridade'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Projetos(projetos: projetos)),
+                );
+              },
+              child: Text('Projetos'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Recomendacao(recomendacoes: recomendacoes)),
+                );
+              },
+              child: Text('Recomendação'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VisualizarCurriculo(
+                    escolaridades: escolaridades,
+                    projetos: projetos,
+                    recomendacoes: recomendacoes,
+                  )),
+                );
+              },
+              child: Text('Visualizar Currículo'),
+            ),
+          ]
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
