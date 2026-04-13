@@ -14,8 +14,9 @@ class Curriculo extends StatefulWidget {
 
 class Escolaridade extends StatelessWidget {
   final List<String> escolaridades;
+  final Function(int)? onRemove;
 
-  Escolaridade({super.key, List<String>? escolaridades})
+  Escolaridade({super.key, List<String>? escolaridades, this.onRemove})
       : escolaridades = escolaridades ?? [];
 
   @override
@@ -29,8 +30,22 @@ class Escolaridade extends StatelessWidget {
           : ListView.builder(
               itemCount: escolaridades.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(escolaridades[index]),
+                return Dismissible(
+                  key: Key(escolaridades[index] + index.toString()),
+                  onDismissed: (direction) {
+                    if (onRemove != null) {
+                      onRemove!(index);
+                    }
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: ListTile(
+                    title: Text(escolaridades[index]),
+                  ),
                 );
               },
             ),
@@ -40,8 +55,9 @@ class Escolaridade extends StatelessWidget {
 
 class Projetos extends StatelessWidget {
   final List<String> projetos;
+  final Function(int)? onRemove;
 
-  Projetos({super.key, List<String>? projetos})
+  Projetos({super.key, List<String>? projetos, this.onRemove})
       : projetos = projetos ?? [];
 
   @override
@@ -55,8 +71,22 @@ class Projetos extends StatelessWidget {
           : ListView.builder(
               itemCount: projetos.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(projetos[index]),
+                return Dismissible(
+                  key: Key(projetos[index] + index.toString()),
+                  onDismissed: (direction) {
+                    if (onRemove != null) {
+                      onRemove!(index);
+                    }
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: ListTile(
+                    title: Text(projetos[index]),
+                  ),
                 );
               },
             ),
@@ -66,8 +96,9 @@ class Projetos extends StatelessWidget {
 
 class Recomendacao extends StatelessWidget {
   final List<String> recomendacoes;
+  final Function(int)? onRemove;
 
-  Recomendacao({super.key, List<String>? recomendacoes})
+  Recomendacao({super.key, List<String>? recomendacoes, this.onRemove})
       : recomendacoes = recomendacoes ?? [];
 
   @override
@@ -81,8 +112,22 @@ class Recomendacao extends StatelessWidget {
           : ListView.builder(
               itemCount: recomendacoes.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(recomendacoes[index]),
+                return Dismissible(
+                  key: Key(recomendacoes[index] + index.toString()),
+                  onDismissed: (direction) {
+                    if (onRemove != null) {
+                      onRemove!(index);
+                    }
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: ListTile(
+                    title: Text(recomendacoes[index]),
+                  ),
                 );
               },
             ),
@@ -299,7 +344,7 @@ class _CurriculoState extends State<Curriculo> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Escolaridade(escolaridades: escolaridades)),
+                  MaterialPageRoute(builder: (context) => Escolaridade(escolaridades: escolaridades, onRemove: (index) => setState(() => escolaridades.removeAt(index)))),
                 );
               },
               child: Text('Escolaridade'),
@@ -309,7 +354,7 @@ class _CurriculoState extends State<Curriculo> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Projetos(projetos: projetos)),
+                  MaterialPageRoute(builder: (context) => Projetos(projetos: projetos, onRemove: (index) => setState(() => projetos.removeAt(index)))),
                 );
               },
               child: Text('Projetos'),
@@ -319,7 +364,7 @@ class _CurriculoState extends State<Curriculo> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Recomendacao(recomendacoes: recomendacoes)),
+                  MaterialPageRoute(builder: (context) => Recomendacao(recomendacoes: recomendacoes, onRemove: (index) => setState(() => recomendacoes.removeAt(index)))),
                 );
               },
               child: Text('Recomendação'),
